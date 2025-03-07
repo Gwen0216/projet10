@@ -9,7 +9,7 @@ before(() => {
     }).then((response) => {
         const token = response.body.token;
         Cypress.env("authToken", token); 
-        cy.log("Token récupéré :", token);
+        
     });
 });
 
@@ -43,9 +43,7 @@ describe("Vérification du panier apres ajout produit", () => {
 
                 
                 const stockNr = extractStock(stockText);
-                cy.log(`Produit : ${productName} | Stock initial : ${stockNr}`);
 
-                
                 expect(stockNr).to.be.gte(1, `Le stock du produit ${productName} doit être supérieur ou égal à 1`);
 
                 
@@ -80,7 +78,7 @@ describe("suppresion arcticle dans le panier",()=>{
         cy.get('[data-cy="detail-product-name"]').should('be.visible').invoke("text").then((productName) => {
             cy.get('[data-cy="detail-product-stock"]').should('be.visible').invoke("text").then((stockText) => {
                 const stockNr = extractStock(stockText);
-                cy.log(`Produit : ${productName} | Stock initial : ${stockNr}`);
+               
         cy.get('[data-cy="detail-product-add"]').click(); 
         cy.get('[data-cy="cart-line-delete"]').click({ multiple: true });
 

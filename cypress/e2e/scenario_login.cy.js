@@ -9,7 +9,7 @@ before(() => {
     }).then((response) => {
         const token = response.body.token;
         Cypress.env("authToken", token); 
-        cy.log("Token récupéré :", token);
+        
     });
 });
 
