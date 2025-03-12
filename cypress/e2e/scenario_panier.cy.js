@@ -13,14 +13,14 @@ describe("Vérification du panier après ajout produit", () => {
         cy.get('[data-cy="detail-product-name"]').should('be.visible').invoke("text").then((productName) => {
             cy.get('[data-cy="detail-product-stock"]').should('be.visible').invoke("text").then((stockText) => {
 
-                // Extraire et convertir le stock
+               
                 const stockNr = extractStock(stockText);
                 cy.log(`Produit : ${productName} | Stock initial : ${stockNr}`);
 
-                // Vérifier que le stock est suffisant avant d'ajouter au panier
+                
                 expect(stockNr).to.be.gte(1, `Le stock du produit ${productName} doit être supérieur ou égal à 1`);
 
-                // Ajouter le produit au panier
+               
                 cy.get('[data-cy="detail-product-add"]').click();
                 cy.get('[data-cy="cart-line-name"]').should("be.visible").contains(productName);
                 cy.get('[data-cy="cart-line-quantity"]').eq(0).click(); 
@@ -87,7 +87,9 @@ describe("Validation formulaire panier", () => {
         cy.get('[data-cy="nav-link-cart"]').click();
         cy.get('[data-cy="nav-link-products"]').click(); 
         cy.get('[data-cy="product-link"]').eq(7).click(); 
-        cy.get('[data-cy="detail-product-add"]').click(); 
+        cy.get('[data-cy="detail-product-add"]').click({ force: true });
+        cy.intercept('POST', '/api/cart').as('addToCart'); 
+        cy.get('[data-cy="detail-product-add"]').click();
         cy.visit("http://localhost:8080/#/cart");
         cy.get('[data-cy="cart-input-lastname"]') .type('Dupond'); 
         cy.get('[data-cy="cart-input-firstname"]') .type('Julie'); 

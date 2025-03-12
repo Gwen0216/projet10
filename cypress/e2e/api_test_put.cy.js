@@ -15,12 +15,13 @@ before(() => {
 
 
 Cypress.Commands.add("apiRequest", (method, endpoint, body = {}) => {
-    return cy.request({
-        method,
-        url: `${apiUrl}${endpoint}`,
-        body,
-        headers: { Authorization: `Bearer ${Cypress.env("authToken")}` } 
-    });
+  return cy.request({
+      method,
+      url: `${apiUrl}${endpoint}`,
+      body,
+      failOnStatusCode: false,
+      headers: { Authorization: `Bearer ${Cypress.env("authToken")}` } 
+  });
 });
 it("login", () => {
     cy.request("POST", `${apiUrl}/login`, {
@@ -117,7 +118,17 @@ it('retourne 403 quand on veut recuperer le panier sans connexion', () => {
         expect(response.body).to.have.property('rating', avis.rating);
       });
     });
-    
+    it('ne devrait pas ajouter un avis avec un titre vide', () => {
+      const avis = {
+        title: "",    
+        comment: "Je suis très satisfait de ce produit.", 
+        rating:5                     
+      };
+      cy.apiRequest('POST', '/reviews', avis).then((response) => {
+        expect(response.status).to.equal(400);
+        expect(response.body).to.have.property('error');
+      });
+    });
   });
     
     
