@@ -8,7 +8,7 @@ describe("Vérification du panier après ajout produit", () => {
         
         cy.get('[data-cy="nav-link-cart"]').click();
         cy.get('[data-cy="nav-link-products"]').click(); 
-        cy.get('[data-cy="product-link"]').eq(3).should('be.visible').click();
+        cy.get('[data-cy="product-link"]').eq(2).should('be.visible').click();
 
         cy.get('[data-cy="detail-product-name"]').should('be.visible').invoke("text").then((productName) => {
             cy.get('[data-cy="detail-product-stock"]').should('be.visible').invoke("text").then((stockText) => {
@@ -43,7 +43,7 @@ describe("Suppression article dans le panier", () => {
         cy.loginUI('test2@test.fr', 'testtest');
         cy.get('[data-cy="nav-link-cart"]').click();
         cy.get('[data-cy="nav-link-products"]').click(); 
-        cy.get('[data-cy="product-link"]').eq(3).click(); 
+        cy.get('[data-cy="product-link"]').eq(2).click(); 
         cy.get('[data-cy="detail-product-name"]').should('be.visible').invoke("text").then((productName) => {
             cy.get('[data-cy="detail-product-stock"]').should('be.visible').invoke("text").then((stockText) => {
                 const stockNr = extractStock(stockText);
@@ -87,9 +87,7 @@ describe("Validation formulaire panier", () => {
         cy.get('[data-cy="nav-link-cart"]').click();
         cy.get('[data-cy="nav-link-products"]').click(); 
         cy.get('[data-cy="product-link"]').eq(7).click(); 
-        cy.get('[data-cy="detail-product-add"]').click({ force: true });
-        cy.intercept('POST', '/api/cart').as('addToCart'); 
-        cy.get('[data-cy="detail-product-add"]').click();
+        cy.get('[data-cy="detail-product-add"]').click({ force: true }); 
         cy.visit("http://localhost:8080/#/cart");
         cy.get('[data-cy="cart-input-lastname"]') .type('Dupond'); 
         cy.get('[data-cy="cart-input-firstname"]') .type('Julie'); 
